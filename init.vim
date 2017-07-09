@@ -12,8 +12,10 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-" Color scheme
+" Color schemes
 Plug 'freeo/vim-kalisi'
+Plug 'jonathanfilip/vim-lucius'
+Plug 'tomasr/molokai'
 
 " Set of default configuratios
 Plug 'tpope/vim-sensible'
@@ -42,15 +44,16 @@ Plug 'majutsushi/tagbar'
 " FSwitch
 Plug 'derekwyatt/vim-fswitch'
 
+" YouCompleteMe
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 
 " Initialize plugin system
 call plug#end()
 
 " Basic configuration
 
-" setup colorscheme kalisi
-colorscheme kalisi
-set background=dark
+" setup colorscheme
+colorscheme molokai
 
 " automatically reread Vim's configuration after writing it
 autocmd! BufWritePost $MYNVIMRC source $MYNVIMRC
@@ -98,6 +101,20 @@ nnoremap <space> za
 " toggle line wrapping on <leader>w
 nmap <leader>w :set wrap!<cr>
 
+" copy&paste to system's clipboard
+nmap <leader>y "+y
+nmap <leader>Y "+Y
+nmap <leader>p "+p
+
+" don't loose selection in visual mode on < and >
+vnoremap < <gv
+vnoremap > >gv
+
+" smart case policy on search
+set ignorecase
+set smartcase
+
+
 " Show vertical bar
 autocmd BufEnter,BufWinEnter,WinEnter * :call <SID>SetParams()
 function! <SID>SetParams()
@@ -134,6 +151,36 @@ endfunction
 
 " create tags on Shift-F12 key
 nmap <silent> <s-f12> :call GenerateTags()<cr>
+
+noremap <leader>p :set paste<CR>:put *<CR>:set nopaste<CR>
+
+" ------------------------------------------------------------------------------
+" modification for Enter key in normal mode
+
+" break current line into two on Enter key (except some windows)
+autocmd BufReadPost,BufEnter,BufWinEnter,WinEnter  *
+            \ if &filetype == 'qf' |
+            \ elseif &filetype == 'vifm-cmdedit' |
+            \ elseif &filetype == 'vifm-edit' |
+            \ elseif bufname("%") == '__TagBar__' |
+            \ elseif !&modifiable |
+            \ elseif &readonly |
+            \ else |
+            \     nmap <buffer> <expr> <cr> MyEnter() |
+            \ endif
+function! MyEnter()
+    if &filetype == 'qf'
+        return "\<cr>"
+    elseif bufname("%") == '__TagBar__'
+        return "\<cr>"
+    elseif !&modifiable
+        return "\<cr>"
+    elseif &readonly
+        return "\<cr>"
+    else
+        return "i\<cr>\<esc>"
+    endif
+endfunction
 
 " Plugins setup
 
@@ -227,6 +274,21 @@ let g:tagbar_autofocus = 1
 
 " map tagbar toggle on ,t
 nmap <leader>t :TagbarToggle<cr>
+
+" ------------------------------------------------------------------------------
+" YouCompleteMe
+
+" populate locations list (:lopen \ :lclose)
+let g:ycm_always_populate_location_list = 1
+" usage of the tag file cause the huge memory usage
+" by the plugin(python process)
+" Related issue: https://github.com/Valloric/YouCompleteMe/issues/595
+let g:ycm_collect_identifiers_from_tags_files = 0
+
+" map build action
+nnoremap <leader>Q :YcmForceCompileAndDiagnostics<CR>
+
+let g:ycm_confirm_extra_conf = 0
 
 " ------------------------------------------------------------------------------
 " FSwitch
