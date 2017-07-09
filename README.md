@@ -4,7 +4,7 @@ neovim configuration and plugins
 ## Install
 
 ```bash
-git clone https://github.com/malirod/dotvim.git ~/.config/nvim
+git clone git@github.com:malirod/dotnvim.git ~/.config/nvim
 ~/.config/nvim
 ./install
 ```
