@@ -53,7 +53,20 @@ call plug#end()
 " Basic configuration
 
 " setup colorscheme
-colorscheme molokai
+" colorscheme molokai
+colorscheme kalisi
+set background=dark
+
+" less blinking
+set lazyredraw
+
+" enable syntax highlighting
+if !exists("syntax_on")
+    syntax on
+endif
+
+" use incremental search
+set incsearch
 
 " automatically reread Vim's configuration after writing it
 autocmd! BufWritePost $MYNVIMRC source $MYNVIMRC
@@ -63,6 +76,18 @@ set spellsuggest+=10
 
 " smart indentation
 filetype plugin indent on
+
+" tune backspace behaviour (indents, line start/end)
+set backspace=indent,start,eol
+
+" to make cursor pass line borders
+set whichwrap=b,s,<,>,[,],l,h
+
+" go through graphical lines, not text lines
+nnoremap j gj
+nnoremap k gk
+xnoremap j gj
+xnoremap k gk
 
 " extends directory for tags file search (from current to root)
 set tags=tags;/
@@ -114,6 +139,28 @@ vnoremap > >gv
 set ignorecase
 set smartcase
 
+" don't reset cursor position on some of motions (e.g. G, gg) to the beginning
+" of a line
+set nostartofline
+
+" automatically write buffer on some commands
+set autowrite
+
+" create backup copies
+set backup
+
+
+
+" line movement commands (up and down)
+nnoremap <a-j> mz:m+<cr>`z==
+nnoremap <a-k> mz:m-2<cr>`z==
+inoremap <a-j> <esc>:m+<cr>==gi
+inoremap <a-k> <esc>:m-2<cr>==gi
+vnoremap <a-j> :m'>+<cr>gv=`<my`>mzgv`yo`z
+vnoremap <a-k> :m'<-2<cr>gv=`>my`<mzgv`yo`z
+
+" persistant undo
+set undofile
 
 " Show vertical bar
 autocmd BufEnter,BufWinEnter,WinEnter * :call <SID>SetParams()
@@ -181,6 +228,30 @@ function! MyEnter()
         return "i\<cr>\<esc>"
     endif
 endfunction
+
+" ==============================================================================
+" tabulation and indentation
+
+" replace tabulation characters with spaces
+set expandtab
+
+" size of a real tabulation characters in spaces
+set tabstop=4
+
+" number of spaces inserted for tabulation replacement
+set softtabstop=4
+
+" show tabulation characters as a period and trailing whitespace as a dot
+" also make it clear whether horizontal scroll is needed
+set list
+set listchars=tab:.\ ,trail:·
+set listchars+=precedes:<,extends:>
+
+" width of a shift for normal, visual and selection modes
+set shiftwidth=4
+
+" round indentation to multiple of 'shiftwidth'
+set shiftround
 
 " Plugins setup
 
