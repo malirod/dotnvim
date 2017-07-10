@@ -47,15 +47,24 @@ Plug 'derekwyatt/vim-fswitch'
 " YouCompleteMe
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 
+Plug 'sjl/gundo.vim'
+
 " Initialize plugin system
 call plug#end()
 
 " Basic configuration
 
+" more colours in a terminal
+set t_Co=256
+
 " setup colorscheme
-" colorscheme molokai
-colorscheme kalisi
+"colorscheme molokai
+colorscheme lucius
+"colorscheme kalisi
 set background=dark
+
+" don't put header files to the back of wild menu list
+set suffixes-=.h
 
 " less blinking
 set lazyredraw
@@ -82,6 +91,9 @@ set backspace=indent,start,eol
 
 " to make cursor pass line borders
 set whichwrap=b,s,<,>,[,],l,h
+
+" virtual editing mode
+set virtualedit=all
 
 " go through graphical lines, not text lines
 nnoremap j gj
@@ -146,10 +158,42 @@ set nostartofline
 " automatically write buffer on some commands
 set autowrite
 
+" some additional paths for file searches
+set path+=/usr/local/include
+set path+=**
+
 " create backup copies
 set backup
 
+function! EnsureDirExists(path)
+    if !isdirectory(a:path)
+        call mkdir(a:path, 'p')
+    endif
+endfunction
 
+function! CreateVimStorageDir(name)
+    let l:path = fnamemodify($MYNVIMRC, ':p:h').'/data/'.a:name
+    call EnsureDirExists(l:path)
+    return l:path
+endfunction
+
+" directory where to store backup files
+let s:backup_dir = CreateVimStorageDir('bak')
+execute 'set backupdir='.s:backup_dir.'/,.,~/tmp,~/'
+
+" directory where to store swap files
+let s:swap_dir = CreateVimStorageDir('swap')
+execute 'set directory='.s:swap_dir.'/'
+
+" directory where to store persistent undo files
+let s:undo_dir = CreateVimStorageDir('undo')
+execute 'set undodir='.s:undo_dir.'/,.'
+
+" don't break lines on input automatically
+set textwidth=0
+
+" break lines on whitespace
+set linebreak
 
 " line movement commands (up and down)
 nnoremap <a-j> mz:m+<cr>`z==
@@ -158,6 +202,9 @@ inoremap <a-j> <esc>:m+<cr>==gi
 inoremap <a-k> <esc>:m-2<cr>==gi
 vnoremap <a-j> :m'>+<cr>gv=`<my`>mzgv`yo`z
 vnoremap <a-k> :m'<-2<cr>gv=`>my`<mzgv`yo`z
+
+" toggle spell checking for current buffer
+nmap <silent> <leader>s :call <SID>ToggleSpell()<cr>
 
 " persistant undo
 set undofile
@@ -415,3 +462,12 @@ nmap <silent> <Leader>oj :FSBelow<cr>
 
 " switch to the file and load it into a new window split below
 nmap <silent> <Leader>oJ :FSSplitBelow<cr>
+
+" ------------------------------------------------------------------------------
+"GUndo
+
+let g:gundo_width = 30
+let g:gundo_preview_height = 25
+let g:gundo_preview_bottom = 1
+
+nnoremap <silent> <f12> :GundoToggle<cr>
