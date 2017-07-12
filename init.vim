@@ -47,6 +47,9 @@ Plug 'derekwyatt/vim-fswitch'
 " YouCompleteMe
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 
+" Simple QuickFix toggling
+Plug 'Valloric/ListToggle'
+
 Plug 'sjl/gundo.vim'
 
 " Initialize plugin system
@@ -337,7 +340,7 @@ let NERDTreeIgnore = ['\.pyc$']
 " Vim Airline
 
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='simple'
+"let g:airline_theme='simple'
 
 " ------------------------------------------------------------------------------
 " Syntastic
@@ -407,6 +410,9 @@ let g:ycm_collect_identifiers_from_tags_files = 0
 nnoremap <leader>Q :YcmForceCompileAndDiagnostics<CR>
 
 let g:ycm_confirm_extra_conf = 0
+
+" Apply YCM FixIt
+map <F9> :YcmCompleter FixIt<CR>
 
 " ------------------------------------------------------------------------------
 " FSwitch
