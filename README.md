@@ -4,6 +4,10 @@ neovim configuration and plugins
 ## Install
 
 ```bash
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt-get update
+sudo apt-get install neovim
+
 sudo apt install curl exuberant-ctags
 sudo pip install neovim
 
