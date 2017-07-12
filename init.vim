@@ -13,9 +13,10 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
 " Color schemes
-Plug 'freeo/vim-kalisi'
-Plug 'jonathanfilip/vim-lucius'
-Plug 'tomasr/molokai'
+"Plug 'freeo/vim-kalisi'
+"Plug 'jonathanfilip/vim-lucius'
+"Plug 'tomasr/molokai'
+Plug 'altercation/vim-colors-solarized'
 
 " Set of default configuratios
 Plug 'tpope/vim-sensible'
@@ -62,9 +63,12 @@ set t_Co=256
 
 " setup colorscheme
 "colorscheme molokai
-colorscheme lucius
 "colorscheme kalisi
+"colorscheme kalisi
+syntax enable
 set background=dark
+let g:solarized_termcolors=256
+colorscheme solarized
 
 " don't put header files to the back of wild menu list
 set suffixes-=.h
@@ -340,7 +344,8 @@ let NERDTreeIgnore = ['\.pyc$']
 " Vim Airline
 
 let g:airline#extensions#tabline#enabled = 1
-"let g:airline_theme='simple'
+let g:airline_theme='simple'
+"let g:airline_theme='kalisi'
 
 " ------------------------------------------------------------------------------
 " Syntastic
