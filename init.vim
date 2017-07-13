@@ -166,8 +166,9 @@ set nostartofline
 set autowrite
 
 " some additional paths for file searches
-set path+=/usr/local/include
 set path+=**
+set path+=/usr/include/**
+set path+=/usr/local/include/**
 
 " create backup copies
 set backup
@@ -229,6 +230,57 @@ function! <SID>SetParams()
     else
         " no vertical border
         set colorcolumn=0
+    endif
+endfunction
+
+
+" for automatic tags regeneration on file write
+autocmd! BufWritePost *.c,*.cpp,*.cc,*.h,*.hpp call <SID>UpdateTags(expand('%'))
+function! <SID>UpdateTags(changedfile)
+    " don't try to write to non-accessible directories, e.g. to fugitive:///...
+    if filewritable(expand('%:p:h')) != 2
+        return
+    endif
+
+    let l:tags = findfile('tags', '.;')
+    if l:tags != ''
+        let l:tagsfile = fnamemodify(l:tags, ':p')
+        let l:srcdir = fnamemodify(l:tagsfile, ':h')
+
+        let l:olddir = getcwd()
+        execute 'silent! lcd '.escape(l:srcdir, ' ')
+
+        if empty(readfile(l:tagsfile))
+            let l:pathtoscan = l:srcdir
+        else
+            if has('win32')
+                let l:pathtoscan = l:olddir[2 + strlen(l:srcdir) - 1:]
+            else
+                let l:pathtoscan = l:olddir[strlen(l:srcdir) + 1:]
+            endif
+        endif
+
+        " Setup excludes
+        if exists("g:ctag_options")
+            let l:ctag_options = g:ctag_options
+        else
+            let l:ctag_options = ''
+        endif
+
+        if has('win32')
+            execute 'silent !start /b ctags -R -a --c++-kinds=+p '
+                        \.'--tag-relative=yes --fields=+iaS --extra=+q '
+                        \.l:ctag_options.' '
+                        \.l:pathtoscan
+        else
+            call system('ctags -R -a --tag-relative=yes -f '
+                        \.shellescape(l:tagsfile)
+                        \.' --c++-kinds=+p --fields=+iaS --extra=+q '
+                        \.l:ctag_options.' '
+                        \.l:pathtoscan
+                        \.'&')
+        endif
+        execute 'silent! lcd '.escape(l:olddir, ' ')
     endif
 endfunction
 
