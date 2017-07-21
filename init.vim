@@ -13,9 +13,9 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
 " Color schemes
-"Plug 'freeo/vim-kalisi'
-"Plug 'jonathanfilip/vim-lucius'
-"Plug 'tomasr/molokai'
+Plug 'freeo/vim-kalisi'
+Plug 'jonathanfilip/vim-lucius'
+Plug 'tomasr/molokai'
 Plug 'altercation/vim-colors-solarized'
 
 " Set of default configuratios
@@ -53,6 +53,8 @@ Plug 'Valloric/ListToggle'
 
 Plug 'sjl/gundo.vim'
 
+Plug 'tpope/vim-commentary'
+
 " Initialize plugin system
 call plug#end()
 
@@ -62,13 +64,13 @@ call plug#end()
 set t_Co=256
 
 " setup colorscheme
-"colorscheme molokai
-"colorscheme kalisi
 "colorscheme kalisi
 syntax enable
-set background=dark
-let g:solarized_termcolors=256
-colorscheme solarized
+"set background=dark
+"let g:solarized_termcolors=256
+"colorscheme solarized
+let g:rehash256=1
+colorscheme molokai
 
 " don't put header files to the back of wild menu list
 set suffixes-=.h
@@ -85,7 +87,8 @@ endif
 set incsearch
 
 " automatically reread Vim's configuration after writing it
-autocmd! BufWritePost $MYNVIMRC source $MYNVIMRC
+" In nvim airline plugin loose coloring"
+"autocmd! BufWritePost $MYNVIMRC source $MYNVIMRC
 
 " show at most 20 suggestions on z=
 set spellsuggest+=10
@@ -303,7 +306,7 @@ function! GenerateTags()
 endfunction
 
 " create tags on Shift-F12 key
-nmap <silent> <s-f12> :call GenerateTags()<cr>
+nmap <silent> <s-F12> :GenerateTags<CR>
 
 noremap <leader>p :set paste<CR>:put *<CR>:set nopaste<CR>
 
@@ -346,6 +349,9 @@ set tabstop=4
 
 " number of spaces inserted for tabulation replacement
 set softtabstop=4
+
+" use 2 spaces for C++&C
+autocmd FileType cpp,c,cc set tabstop=2 softtabstop=2 shiftwidth=2
 
 " show tabulation characters as a period and trailing whitespace as a dot
 " also make it clear whether horizontal scroll is needed
@@ -471,6 +477,9 @@ let g:ycm_confirm_extra_conf = 0
 " Apply YCM FixIt
 map <F9> :YcmCompleter FixIt<CR>
 
+nmap <F4> :YcmCompleter GoToDeclaration<CR>
+nmap <F5> :YcmCompleter GoToDefinition<CR>
+
 " ------------------------------------------------------------------------------
 " FSwitch
 
@@ -534,3 +543,8 @@ let g:gundo_preview_height = 25
 let g:gundo_preview_bottom = 1
 
 nnoremap <silent> <f12> :GundoToggle<cr>
+
+" ------------------------------------------------------------------------------
+" commentary
+
+autocmd FileType cpp,cc set commentstring=//\ %s
