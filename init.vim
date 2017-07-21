@@ -55,6 +55,8 @@ Plug 'sjl/gundo.vim'
 
 Plug 'tpope/vim-commentary'
 
+Plug 'yegappan/grep'
+
 " Initialize plugin system
 call plug#end()
 
@@ -548,3 +550,17 @@ nnoremap <silent> <f12> :GundoToggle<cr>
 " commentary
 
 autocmd FileType cpp,cc set commentstring=//\ %s
+
+" ------------------------------------------------------------------------------
+" grep
+
+" Search word under cursor in current dir (recursive)
+inoremap <C-F> <esc>:Rgrep<CR>
+nnoremap <silent> <C-F> :Rgrep<CR>
+" Search selected text in current dir (recursive)
+vnoremap <C-F> y:execute 'Rgrep '.substitute('<c-r>"', ' ', '\\ ', 'g')<CR>
+
+:let Grep_Default_Options = '-i'
+:let Grep_Skip_Files = '*.bak *~ *tags'
+:let Grep_Skip_Dirs = '.git'
+:let Grep_Default_Filelist = '*.c *.cpp *.cc *.hpp *.h *.cxx *.py'
