@@ -568,3 +568,9 @@ vnoremap <C-F> y:execute 'Rgrep '.substitute('<c-r>"', ' ', '\\ ', 'g')<CR>
 :let Grep_Skip_Files = '*.bak *~ *tags'
 :let Grep_Skip_Dirs = '.git'
 :let Grep_Default_Filelist = '*.c *.cpp *.cc *.hpp *.h *.cxx *.py'
+
+" ------------------------------------------------------------------------------
+" Clang-format
+
+map <C-I> :pyf ~/.config/nvim/other/clang-format.py<cr>
+imap <C-I> <c-o>:pyf ~/.config/nvim/other/clang-format.py<cr>
