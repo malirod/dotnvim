@@ -367,6 +367,10 @@ set shiftwidth=4
 " round indentation to multiple of 'shiftwidth'
 set shiftround
 
+" Bind Ctrl-a to select all
+
+map <C-a> <esc>gg0VG$<CR>
+
 " Plugins setup
 
 " ------------------------------------------------------------------------------
