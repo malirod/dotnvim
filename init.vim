@@ -18,9 +18,6 @@ Plug 'jonathanfilip/vim-lucius'
 Plug 'tomasr/molokai'
 Plug 'altercation/vim-colors-solarized'
 
-" Set of default configuratios
-Plug 'tpope/vim-sensible'
-
 " CtrlP pluging: fuzzy file search
 Plug 'kien/ctrlp.vim'
 
