@@ -403,7 +403,8 @@ let g:ycm_always_populate_location_list = 1
 " usage of the tag file cause the huge memory usage
 " by the plugin(python process)
 " Related issue: https://github.com/Valloric/YouCompleteMe/issues/595
-let g:ycm_collect_identifiers_from_tags_files = 0
+"let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_add_preview_to_completeopt = 0
 
 " map build action
 nnoremap <leader>Q :YcmForceCompileAndDiagnostics<CR>
