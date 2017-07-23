@@ -154,6 +154,9 @@ nmap <leader>y "+y
 nmap <leader>Y "+Y
 nmap <leader>p "+p
 
+" Paste multiple times
+xnoremap p pgvy
+
 " don't loose selection in visual mode on < and >
 vnoremap < <gv
 vnoremap > >gv
