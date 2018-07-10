@@ -94,6 +94,9 @@ set incsearch
 " show at most 20 suggestions on z=
 set spellsuggest+=10
 
+" set slepp check languages
+set spelllang=ru,en
+
 " smart indentation
 filetype plugin indent on
 
@@ -217,6 +220,15 @@ inoremap <a-j> <esc>:m+<cr>==gi
 inoremap <a-k> <esc>:m-2<cr>==gi
 vnoremap <a-j> :m'>+<cr>gv=`<my`>mzgv`yo`z
 vnoremap <a-k> :m'<-2<cr>gv=`>my`<mzgv`yo`z
+
+function! <SID>ToggleSpell()
+    setlocal spell!
+    if &l:spell
+      echo 'Spell checking is ON'
+    else
+      echo 'Spell checking is OFF'
+    endif
+endfunction
 
 " toggle spell checking for current buffer
 nmap <silent> <leader>s :call <SID>ToggleSpell()<cr>
